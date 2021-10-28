@@ -1,0 +1,126 @@
+plugins {
+  id 'com.android.application'
+  id 'kotlin-android'
+  id 'kotlin-kapt'
+  id 'dagger.hilt.android.plugin'
+}
+
+import com.stackinflow.androidapptemplate.buildsrc.AppConfig
+import com.stackinflow.androidapptemplate.buildsrc.Lib
+
+android {
+  compileSdkVersion AppConfig.COMPILE_SDK
+
+  defaultConfig {
+    applicationId AppConfig.APP_ID
+    minSdkVersion AppConfig.MIN_SDK
+    targetSdkVersion AppConfig.TARGET_SDK
+    versionCode AppConfig.VERSION_CODE
+    versionName AppConfig.VERSION_NAME
+
+    testInstrumentationRunner "com.stackinflow.androidapptemplate.CustomTestRunner"
+
+    buildConfigField(
+        "String",
+        "BASE_URL",
+        "\"https://api.icndb.com\""
+    )
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled true
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_11
+    targetCompatibility JavaVersion.VERSION_11
+  }
+
+  kotlinOptions {
+    jvmTarget = '11'
+    useIR = true
+  }
+
+  composeOptions {
+    kotlinCompilerVersion '1.4.20'
+    kotlinCompilerExtensionVersion '1.0.0-alpha08'
+  }
+
+  testOptions {
+    unitTests {
+      includeAndroidResources = true
+    }
+  }
+  buildFeatures {
+    compose true
+  }
+}
+
+hilt {
+  enableTransformForLocalTests = true
+}
+
+kapt {
+  correctErrorTypes true
+}
+
+dependencies {
+
+  implementation Lib.Androidx.ACTIVITY_KTX
+  implementation Lib.Androidx.APP_COMPAT
+  implementation Lib.Androidx.CORE_KTX
+  implementation Lib.Androidx.CONSTRAINT_LAYOUT
+  implementation Lib.Androidx.LIFECYCLE_VIEWMODEL
+  androidTestImplementation Lib.Androidx.Test.ESPRESSO_CORE
+  androidTestImplementation Lib.Androidx.Test.EXT_JUNIT
+
+  implementation Lib.Androidx.Compose.UI
+  implementation Lib.Androidx.Compose.MATERIAL
+  implementation Lib.Androidx.Compose.TOOLING
+  androidTestImplementation Lib.Androidx.Compose.TESTING
+
+  implementation Lib.Androidx.Hilt.LIFECYCLE_VIEWMODEL
+  implementation Lib.Androidx.Hilt.WORK
+  kapt Lib.Androidx.Hilt.COMPILER
+  kaptTest Lib.Androidx.Hilt.COMPILER
+  kaptAndroidTest Lib.Androidx.Hilt.COMPILER
+
+  debugImplementation Lib.Chucker.CHUCKER_DEBUG
+  releaseImplementation Lib.Chucker.CHUCKER_NO_OP_RELEASE
+
+  implementation Lib.Google.Dagger.HILT_ANDROID
+  kapt Lib.Google.Dagger.HILT_ANDROID_COMPILER
+  implementation Lib.Google.MATERIAL_DESIGN
+
+  androidTestImplementation Lib.Google.Dagger.Test.HILT_ANDROID_TESTING
+  kaptAndroidTest Lib.Google.Dagger.HILT_ANDROID_COMPILER
+
+  testImplementation Lib.Google.Dagger.Test.HILT_ANDROID_TESTING
+  kaptTest Lib.Google.Dagger.HILT_ANDROID_COMPILER
+
+  implementation Lib.Kotlin.STD_LIB
+  implementation Lib.Kotlin.COROUTINES
+  implementation Lib.Kotlin.COROUTINES_ANDROID
+  testImplementation Lib.Kotlin.COROUTINES_TEST
+  testImplementation Lib.Kotlin.COROUTINES
+
+  implementation Lib.Logger.TIMBER
+
+  implementation Lib.Square.LOGGING_INTERCEPTOR
+  implementation Lib.Square.RETROFIT
+  implementation Lib.Square.RETROFIT_MOSHI
+
+  debugImplementation Lib.Square.LEAK_CANARY
+
+  testImplementation Lib.Test.ARCH_CORE
+  testImplementation Lib.Test.CORE_TEST
+  testImplementation Lib.Test.JUNIT
+  testImplementation Lib.Test.ROBOELECTRIC
+
+  testImplementation Lib.Test.MOCK.MOCKK
+  androidTestImplementation Lib.Test.MOCK.ANDROID_MOCKK
+  testImplementation Lib.Test.MOCK.MOCK_WEB_SERVER
+}
